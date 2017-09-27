@@ -9,7 +9,7 @@ export default {
       <html lang="en">
         <head>
           <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+          <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
           <link rel="preconnect" href="//static.cdn.com">
           <link rel="preconnect" href="//images.cdn.com">
           <link rel="preload" as="script" href="${assets.webpackManifest.js}">
@@ -32,8 +32,8 @@ export default {
           <meta name="msapplication-navbutton-color" content="#5500eb">
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
           <meta name="msapplication-starturl" content="/">
-          <link rel="icon" type="image/png" sizes="256x256" href="http://www.fancyicons.com/free-icons/232/cinema/png/256/the_flash_sign_256.png">
-          <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="http://www.fancyicons.com/free-icons/232/cinema/png/256/the_flash_sign_256.png">
+          <link rel="icon" type="image/png" sizes="256x256" href="https://raw.githubusercontent.com/simonfl3tcher/react-progressive-web-app/master/public/assets/images/icons/icon-512x512.png">
+          <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="https://raw.githubusercontent.com/simonfl3tcher/react-progressive-web-app/master/public/assets/images/icons/icon-512x512.png">
           ${head.title.toString()}
           ${head.meta.toString()}
           ${head.link.toString()}

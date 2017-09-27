@@ -7,7 +7,7 @@ html {
 
 body {
   background: #fff;
-  color: var(--color-tertiary);
+  color: var(--color-secondary);
   font-size: 1.4em;
   font-weight: 400;
   font-family: system-ui;

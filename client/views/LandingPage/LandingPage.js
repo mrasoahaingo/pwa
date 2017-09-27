@@ -13,6 +13,7 @@ const LandingPage = ({
     <h1>PWA</h1>
     <p>An opinionated progressive web app boilerplate</p>
     <Testimonials testimonials={testimonials} />
+    <Testimonials testimonials={testimonials} />
   </div>
 );
 
