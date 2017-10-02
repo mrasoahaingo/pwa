@@ -3,6 +3,7 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  height: 100%;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
   font-size: 1.4em;
   font-weight: 400;
   font-family: system-ui;
+  height: 100%;
 }
 
 *,
@@ -18,4 +20,12 @@ body {
 *::before {
   box-sizing: inherit;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+#root {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

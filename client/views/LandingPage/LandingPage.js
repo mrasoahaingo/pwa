@@ -1,39 +1,52 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { asyncConnect } from 'redux-connect';
-import isEmpty from 'lodash/isEmpty';
-import * as contentActionCreators from '../../services/content/contentDuck';
-import Testimonials from './Testimonials/Testimonials';
+/* global tracking */
+
+import React, { Component } from 'react';
 import './landingPage.css';
 
-const LandingPage = ({
-  content: { testimonials },
-}) => (
+const LandingPage = () => (
   <div className="landing-page">
-    <h1>PWA</h1>
-    <p>An opinionated progressive web app boilerplate</p>
-    <Testimonials testimonials={testimonials} />
-    <Testimonials testimonials={testimonials} />
+    <Camera />
   </div>
 );
 
-LandingPage.propTypes = {
-  content: PropTypes.object.isRequired,
-};
+LandingPage.propTypes = {};
 
-const beforeRouteEnter = [{
-  promise: ({ store: { dispatch, getState } }) => {
-    const promise = isEmpty(getState().content.testimonials)
-      ? dispatch(contentActionCreators.getTestimonials(3)) : null;
-    return __BROWSER__ ? null : promise;
-  },
-}];
+class Camera extends Component {
 
-const mapStateToProps = (state) => ({
-  content: state.content,
-});
+  state = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  };
 
-export default asyncConnect(
-  beforeRouteEnter,
-  mapStateToProps,
-)(LandingPage);
+  componentDidMount() {
+    const canvas = this.canvas;
+    const context = canvas.getContext('2d');
+    const tracker = new tracking.ObjectTracker(['face']);
+    tracking.track(this.video, tracker, { camera: true });
+    tracker.on('track', (event) => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      event.data.forEach((rect) => {
+        context.strokeStyle = '#a64ceb';
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      });
+    });
+  }
+
+  video = null;
+  canvas = null;
+
+  render() {
+    return (
+      <div>
+        <video ref={(el) => { this.video = el; }} width="320" height="240" preload autoPlay loop muted>
+          <track kind="captions" src="" />
+        </video>
+        <canvas ref={(el) => { this.canvas = el; }} id="canvas" width="320" height="240" />
+      </div>
+    );
+  }
+}
+
+export default LandingPage;
