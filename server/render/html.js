@@ -13,7 +13,6 @@ export default {
           <link rel="preconnect" href="//cdnjs.cloudflare.com">
           <link rel="preload" as="script" href="${getAsset('webpackManifest').js}">
           <link rel="preload" as="script" href="${getAsset('vendor').js}">
-          <link rel="preload" as="script" href="${getAsset('clmtrackr').js}">
           <link rel="preload" as="script" href="${getAsset('main').js}">
           ${!getAsset(route.name) ? '' : `<link rel="preload" as="script" href="${getAsset(route.name).js}">`}`;
   },
@@ -38,7 +37,6 @@ export default {
           ${head.meta.toString()}
           ${head.link.toString()}
           ${head.script.toString()}
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jsfeat/0.0.8/jsfeat-min.js"></script>
         </head>
         <body>
           <script>window.module = window.module || {}</script>
@@ -47,7 +45,6 @@ export default {
           <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify({} /* assetsManifest */)}</script>
           <script src="${getAsset('webpackManifest').js}"></script>
           <script src="${getAsset('vendor').js}"></script>
-          <script src="${getAsset('clmtrackr').js}"></script>
           <script src="${getAsset('main').js}"></script>
           ${__LOCAL__ ? '' : `<script>${scripts.serviceWorker}</script>`}
           </body>

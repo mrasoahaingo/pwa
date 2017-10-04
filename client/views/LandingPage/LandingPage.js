@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import loadScript from 'simple-load-script';
-import GIF from 'gif.js.optimized';
 import './landingPage.css';
 import skullImage from './skull.png';
 
@@ -11,10 +10,6 @@ const LandingPage = () => (
     <Camera />
   </div>
 );
-
-const skull = new Image(178, 178);
-skull.src = skullImage;
-skull.crossOrigin = 'anonymous';
 
 LandingPage.propTypes = {};
 
@@ -29,14 +24,16 @@ class Camera extends Component {
   };
 
   componentDidMount() {
-    navigator.getUserMedia({
-      video: true,
-    }, (stream) => {
-      this.video.src = (window.URL && window.URL.createObjectURL(stream));
-      this.initTracker();
-    }, () => {
-      // no support
-    });
+    if (typeof navigator !== 'undefined') {
+      navigator.getUserMedia({
+        video: true,
+      }, (stream) => {
+        this.video.srcObject = stream;
+        this.initTracker();
+      }, () => {
+        // no support
+      });
+    }
   }
 
   video = null;
@@ -60,7 +57,12 @@ class Camera extends Component {
     let lastFrameTime = Date.now();
     let timer = null;
 
+    const GIF = await import('gif.js.optimized' /* webpackChunkName: 'gifjs' */);
     const gifWorkerFile = await import('file-loader!../../libs/gif.worker.js' /* webpackChunkName: 'gifworker' */); //eslint-disable-line
+
+    const skull = new Image(178, 178);
+    skull.src = skullImage;
+    skull.crossOrigin = 'anonymous';
 
     this.gif = new GIF({
       workerScript: gifWorkerFile,
@@ -143,6 +145,7 @@ class Camera extends Component {
       <div>
         <video ref={(el) => { this.video = el; }} width="320" height="240" preload autoPlay playsInline loop muted>
           <track kind="captions" src="" />
+          <track kind="description" src="" />
         </video>
         <canvas ref={(el) => { this.canvas = el; }} id="canvas" width="320" height="240" />
         <button onClick={this.startRecording}>start recording</button>
