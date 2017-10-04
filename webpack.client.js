@@ -17,13 +17,16 @@ module.exports = {
   cache: !isProd,
 
   entry: {
+    hmr: 'webpack-hot-middleware/client',
     main: './client/index.js',
     vendor: [
-      './client/vendor/js/tracking.js',
-      './client/vendor/js/face.js',
       './client/vendor/js/index.js',
       './client/vendor/css/index.css',
     ],
+  },
+
+  externals: {
+    jsfeat: 'jsfeat',
   },
 
   output: {

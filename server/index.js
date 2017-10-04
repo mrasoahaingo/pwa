@@ -7,6 +7,26 @@ import slashes from 'connect-slashes';
 import renderMiddleware from './middlewares/renderMiddleware';
 
 const app = express();
+
+const webpack = require('webpack');
+const webpackConfig = require('../webpack.client.js');
+const webpackAssets = require('express-webpack-assets');
+const webpackDevMid = require('webpack-dev-middleware');
+const webpackHotMid = require('webpack-hot-middleware');
+
+if (process.env.PWA_ENV === 'local') {
+  const compiler = webpack(webpackConfig);   // config is required above
+  app.use(webpackDevMid(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath,    // "/static/"
+  }));
+  app.use(webpackHotMid(compiler));
+}
+
+app.use(webpackAssets('./build/client/assetsManifest.json', {
+  devMode: process.env.PWA_ENV === 'local',
+}));
+
 app.set('trust proxy', true);
 app.use(helmet({ dnsPrefetchControl: false }));
 app.use(compression());

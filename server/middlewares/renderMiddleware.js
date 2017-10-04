@@ -13,10 +13,11 @@ const PWA_SSR = process.env.PWA_SSR === 'true';
 const serverRenderedChunks = async (req, res, renderProps) => {
   const route = renderProps.routes[renderProps.routes.length - 1];
   const store = configureStore();
+  const { webpack_asset } = res.locals;
 
   res.set('Content-Type', 'text/html');
 
-  const earlyChunk = html.earlyChunk(route);
+  const earlyChunk = html.earlyChunk(route, { getAsset: webpack_asset });
   res.write(earlyChunk);
   res.flush();
 
@@ -31,6 +32,7 @@ const serverRenderedChunks = async (req, res, renderProps) => {
     Helmet.renderStatic(),
     store.getState(),
     route,
+    { getAsset: webpack_asset },
   );
 
   res.end(lateChunk);
