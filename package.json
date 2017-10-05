@@ -90,6 +90,7 @@
     "morgan": "1.8.2",
     "nock": "9.0.14",
     "normalize.css": "7.0.0",
+    "postcss-hexrgba": "^1.0.0",
     "preact": "8.2.5",
     "preact-compat": "3.17.0",
     "prop-types": "15.6.0",

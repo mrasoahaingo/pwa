@@ -56,6 +56,8 @@ class Camera extends React.Component {
     skull.crossOrigin = 'anonymous';
 
     this.gif = new GIF({
+      workers: 16,
+      quality: 12,
       workerScript: gifWorkerFile,
       width: canvas.width,
       height: canvas.height,

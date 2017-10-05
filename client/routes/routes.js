@@ -11,7 +11,7 @@ export default [
       },
       {
         component: PlayPage,
-        path: '/play',
+        path: '/play/',
         exact: true,
       },
     ],

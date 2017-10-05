@@ -1,7 +1,9 @@
 @import './variables.css';
+@import url('https://fonts.googleapis.com/css?family=Passion+One');
 
 a {
-  color: inherit;
+  font-family: 'Passion One', system-ui;
+  color: rgba(#FFF, .8);
   text-decoration: none;
 }
 

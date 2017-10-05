@@ -2,11 +2,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from './logo.png';
 import './landingPage.css';
 
 const LandingPage = () => (
   <div className="landing-page">
-    <Link to="/play">play</Link>
+    <img src={logo} alt="" className="landing-logo" />
+    <Link to="/play/">play</Link>
   </div>
 );
 

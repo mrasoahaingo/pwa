@@ -1,2 +1,14 @@
 {
+  // Place your settings in this file to overwrite the default settings
+  "files.autoSave": "off",
+  "vsicons.projectDetection.disableDetect": true,
+  "window.zoomLevel": -1,
+  "workbench.colorTheme": "Atom One Dark",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.tabSize": 2,
+  "prettier.singleQuote": true,
+  "editor.formatOnSave": true,
+  "prettier.trailingComma": "all",
+  "editor.detectIndentation": false,
+  "prettier.printWidth": 100
 }

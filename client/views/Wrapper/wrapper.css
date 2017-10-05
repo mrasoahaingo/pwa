@@ -8,4 +8,37 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-position: center center;
+  background-size: cover;
+
+  &-bg {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    background-position: center center;
+    background-size: cover;
+    filter: blur(5px);
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: inset 0 0 500px rgba(#292929, .9);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(rgba(#292929, 0), rgba(#292929, .9));
+  }
 }
