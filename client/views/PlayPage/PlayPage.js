@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Camera from './Camera';
 
 const PlayPage = () => (
   <div className="play-page">
-    <Link to="/play">About</Link>
+    <Camera />
   </div>
 );
 

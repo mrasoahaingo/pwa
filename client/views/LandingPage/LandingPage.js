@@ -6,7 +6,7 @@ import './landingPage.css';
 
 const LandingPage = () => (
   <div className="landing-page">
-    <Link to="/about">About</Link>
+    <Link to="/play">play</Link>
   </div>
 );
 

@@ -17,7 +17,7 @@ module.exports = {
   cache: !isProd,
 
   entry: {
-    hmr: 'webpack-hot-middleware/client',
+    ...(isProd ? {} : { hmr: 'webpack-hot-middleware/client' }),
     main: './client/index.js',
     vendor: [
       './client/vendor/js/index.js',
@@ -81,6 +81,7 @@ module.exports = {
       path: path.resolve('./build/client'),
       prettyPrint: true,
     }),
+    new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
     ...(isProd ? [
       new webpack.LoaderOptionsPlugin({
         minimize: true,
