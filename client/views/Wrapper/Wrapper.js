@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { asyncConnect } from 'redux-connect';
 import { performanceMark } from '../../services/utils';
 import './wrapper.css';
 
@@ -26,11 +25,4 @@ Wrapper.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-const beforeRouteEnter = [];
-
-const mapStateToProps = false;
-
-export default asyncConnect(
-  beforeRouteEnter,
-  mapStateToProps,
-)(Wrapper);
+export default Wrapper;
