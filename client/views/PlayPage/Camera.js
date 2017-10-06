@@ -11,7 +11,7 @@ class Camera extends React.Component {
     gifSrc: null,
   };
   componentDidMount() {
-    if (typeof navigator !== 'undefined') {
+    if (this.video && typeof navigator !== 'undefined') {
       navigator.getUserMedia(
         {
           video: true,
@@ -136,36 +136,38 @@ class Camera extends React.Component {
 
   render() {
     const { gifSrc } = this.state;
-    return (
-      <div>
-        <video
-          ref={el => {
-            this.video = el;
-          }}
-          width="320"
-          height="240"
-          preload
-          autoPlay
-          playsInline
-          loop
-          muted
-        >
-          <track kind="captions" src="" />
-          <track kind="description" src="" />
-        </video>
-        <canvas
-          ref={el => {
-            this.canvas = el;
-          }}
-          id="canvas"
-          width="320"
-          height="240"
-        />
+    return [
+      <video
+        key="video"
+        ref={el => {
+          this.video = el;
+        }}
+        width="320"
+        height="240"
+        preload
+        autoPlay
+        playsInline
+        loop
+        muted
+      >
+        <track kind="captions" src="" />
+        <track kind="description" src="" />
+      </video>,
+      <canvas
+        key="canvas"
+        ref={el => {
+          this.canvas = el;
+        }}
+        id="canvas"
+        width="320"
+        height="240"
+      />,
+      <div key="buttons">
         <button onClick={this.startRecording}>start recording</button>
         <button onClick={this.generateGif}>generate gif</button>
-        {gifSrc && <img src={gifSrc} alt="gif" />}
-      </div>
-    );
+      </div>,
+      gifSrc && <img key="gif" src={gifSrc} alt="gif" />,
+    ];
   }
 }
 
