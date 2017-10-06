@@ -33,7 +33,7 @@ class Camera extends React.Component {
   tracker = null;
 
   initTracker = async () => {
-    const trackerFile = await import('file-loader!../../libs/clmtrackr.js' /* webpackChunkName: 'clmtrackr' */); //eslint-disable-line
+    const trackerFile = await import('file-loader!../../../libs/clmtrackr.js' /* webpackChunkName: 'clmtrackr' */); //eslint-disable-line
     await loadScript(trackerFile);
     this.tracker = new clm.tracker(); // eslint-disable-line
     this.tracker.init();
@@ -49,7 +49,7 @@ class Camera extends React.Component {
     let timer = null;
 
     const GIF = await import('gif.js.optimized' /* webpackChunkName: 'gifjs' */);
-    const gifWorkerFile = await import('file-loader!../../libs/gif.worker.js' /* webpackChunkName: 'gifworker' */); //eslint-disable-line
+    const gifWorkerFile = await import('file-loader!../../../libs/gif.worker.js' /* webpackChunkName: 'gifworker' */); //eslint-disable-line
 
     const skull = new Image(178, 178);
     skull.src = skullImage;
@@ -136,38 +136,39 @@ class Camera extends React.Component {
 
   render() {
     const { gifSrc } = this.state;
-    return [
-      <video
-        key="video"
-        ref={el => {
-          this.video = el;
-        }}
-        width="320"
-        height="240"
-        preload
-        autoPlay
-        playsInline
-        loop
-        muted
-      >
-        <track kind="captions" src="" />
-        <track kind="description" src="" />
-      </video>,
-      <canvas
-        key="canvas"
-        ref={el => {
-          this.canvas = el;
-        }}
-        id="canvas"
-        width="320"
-        height="240"
-      />,
-      <div key="buttons">
-        <button onClick={this.startRecording}>start recording</button>
-        <button onClick={this.generateGif}>generate gif</button>
-      </div>,
-      gifSrc && <img key="gif" src={gifSrc} alt="gif" />,
-    ];
+    return (
+      <div className="camera">
+        <video
+          ref={el => {
+            this.video = el;
+          }}
+          width="320"
+          height="240"
+          preload
+          autoPlay
+          playsInline
+          loop
+          muted
+        >
+          <track kind="captions" src="" />
+          <track kind="description" src="" />
+        </video>
+        <canvas
+          key="canvas"
+          ref={el => {
+            this.canvas = el;
+          }}
+          id="canvas"
+          width="320"
+          height="240"
+        />
+        <div key="buttons">
+          <button onClick={this.startRecording}>start recording</button>
+          <button onClick={this.generateGif}>generate gif</button>
+        </div>
+        {gifSrc && <img key="gif" src={gifSrc} alt="gif" />}
+      </div>
+    );
   }
 }
 

@@ -7,7 +7,7 @@
   "workbench.iconTheme": "vscode-icons",
   "editor.tabSize": 2,
   "prettier.singleQuote": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "prettier.trailingComma": "all",
   "editor.detectIndentation": false,
   "prettier.printWidth": 100

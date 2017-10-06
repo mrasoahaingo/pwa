@@ -17,7 +17,7 @@ module.exports = {
   cache: !isProd,
 
   entry: {
-    ...(isProd ? {} : { hmr: 'webpack-hot-middleware/client' }),
+    hmr: 'webpack-hot-middleware/client',
     main: './client/index.js',
     vendor: [
       './client/vendor/js/index.js',
@@ -34,13 +34,6 @@ module.exports = {
     publicPath: __PWA_PUBLIC_PATH__,
     filename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
     chunkFilename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
-  },
-
-  resolve: {
-    alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat',
-    },
   },
 
   module: {
@@ -81,7 +74,6 @@ module.exports = {
       path: path.resolve('./build/client'),
       prettyPrint: true,
     }),
-    new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
     ...(isProd ? [
       new webpack.LoaderOptionsPlugin({
         minimize: true,
@@ -125,6 +117,7 @@ module.exports = {
       new webpack.NamedModulesPlugin(),
       new DashboardPlugin(),
     ]),
+    // new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
   ],
 
   devtool: isProd ? 'hidden-source-map' : 'inline-source-map',

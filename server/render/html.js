@@ -4,9 +4,12 @@ import { scripts } from './fragments';
 
 export default {
   earlyChunk(context, { getAsset }) {
-    const preloadChunks = context.splitPoints.map((chunkName) => (
-      getAsset(chunkName) ? `<link rel="preload" as="script" href="${getAsset(chunkName).js}">` : ''
-    ));
+    const preloadChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName)
+          ? `<link rel="preload" as="script" href="${getAsset(chunkName).js}">`
+          : '',
+    );
     return `
       <!doctype html>
       <html lang="en">
@@ -21,12 +24,19 @@ export default {
   },
 
   lateChunk(app, head, initialState, context, { getAsset }) {
-    const cssChunks = context.splitPoints.map((chunkName) => (
-      getAsset(chunkName) && getAsset(chunkName).css ? `<link rel="stylesheet" type="text/css" href="${getAsset(chunkName).css}">` : ''
-    ));
+    const cssChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName) && getAsset(chunkName).css
+          ? `<link rel="stylesheet" type="text/css" href="${getAsset(chunkName).css}">`
+          : '',
+    );
     return `
-          ${__LOCAL__ || !getAsset('vendor').css ? '' : `<link rel="stylesheet" type="text/css" href="${getAsset('vendor').css}">`}
-          ${__LOCAL__ || !getAsset('main').css ? '' : `<link rel="stylesheet" type="text/css" href="${getAsset('main').css}">`}
+          ${__LOCAL__ || !getAsset('vendor').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('vendor').css}">`}
+          ${__LOCAL__ || !getAsset('main').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('main').css}">`}
           ${__LOCAL__ ? '' : cssChunks.join('')}
           ${__LOCAL__ ? '' : '<link rel="manifest" href="/manifest.json">'}
           <meta name="mobile-web-app-capable" content="yes">

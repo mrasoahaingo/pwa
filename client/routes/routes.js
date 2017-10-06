@@ -1,4 +1,4 @@
-import { Wrapper, LandingPage, PlayPage } from './Bundles';
+import { Wrapper, LandingPage, PlayPage } from './AsyncBundles';
 
 export default [
   {

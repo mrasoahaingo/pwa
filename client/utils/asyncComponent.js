@@ -4,27 +4,22 @@ function asyncComponent(chunkName, getComponent) {
   return class AsyncComponent extends React.Component {
     static Component = null;
 
-    static loadComponent() {
-      return getComponent().then(m => m.default).then(Component => {
-        AsyncComponent.Component = Component;
-        return Component;
-      });
+    static loadComponent = getComponent;
+
+    _loadComponent = async () => {
+      const mod = await getComponent();
+      this.setState({ Component: mod.default || mod });
     };
 
     mounted = false;
 
     state = {
-      Component: AsyncComponent.Component
+      Component: AsyncComponent.Component,
     };
 
     componentWillMount() {
-      if(this.state.Component === null) {
-        AsyncComponent.loadComponent()
-        .then(Component => {
-          if(this.mounted) {
-            this.setState({Component});
-          }
-        });
+      if (this.state.Component === null) {
+        this._loadComponent();
       }
     }
 
@@ -37,10 +32,10 @@ function asyncComponent(chunkName, getComponent) {
     }
 
     render() {
-      const {Component} = this.state;
+      const { Component } = this.state;
 
-      if(Component !== null) {
-        return (<Component {...this.props} />);
+      if (Component !== null) {
+        return <Component {...this.props} />;
       }
       return null; // or <div /> with a loading spinner, etc..
     }
@@ -48,4 +43,3 @@ function asyncComponent(chunkName, getComponent) {
 }
 
 export default asyncComponent;
-

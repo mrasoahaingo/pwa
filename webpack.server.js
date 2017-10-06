@@ -14,7 +14,7 @@ module.exports = {
   target: 'node',
 
   externals: [
-    nodeExternals({ whitelist: [/\.css$/] }),
+    nodeExternals(),
     /assetsManifest.json/,
   ],
 

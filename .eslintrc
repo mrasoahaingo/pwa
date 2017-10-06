@@ -19,6 +19,7 @@
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }],
     "no-underscore-dangle": ["off"],
     "no-mixed-operators": ["off"],
+    "no-confusing-arrow": ["off"],
     "react/forbid-prop-types": ["error", { "forbid": ["any"] }],
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "react/require-default-props": ["off"],
