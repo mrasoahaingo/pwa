@@ -38,11 +38,11 @@ app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 app.use(csp({
   policies: {
     'default-src': [csp.SELF],
-    'script-src': [csp.SELF, csp.INLINE],
+    'script-src': [csp.SELF, csp.INLINE, csp.EVAL],
     'style-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com'],
     'font-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
     'img-src': [csp.SELF, 'data:', 'raw.githubusercontent.com'],
-    'worker-src': [csp.SELF],
+    'worker-src': [csp.SELF, 'blob:'],
     'block-all-mixed-content': true,
   },
 }));
