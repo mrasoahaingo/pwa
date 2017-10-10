@@ -1,7 +1,7 @@
 import 'babel-polyfill';
-import fs from 'fs';
 import express from 'express';
 import helmet from 'helmet';
+import csp from 'express-csp-header';
 import compression from 'compression';
 import morgan from 'morgan';
 import slashes from 'connect-slashes';
@@ -34,6 +34,18 @@ app.use(
 
 app.set('trust proxy', true);
 app.use(helmet({ dnsPrefetchControl: false }));
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+app.use(csp({
+  policies: {
+    'default-src': [csp.SELF],
+    'script-src': [csp.SELF, csp.INLINE],
+    'style-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com'],
+    'font-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+    'img-src': [csp.SELF, 'data:', 'raw.githubusercontent.com'],
+    'worker-src': [csp.SELF],
+    'block-all-mixed-content': true,
+  },
+}));
 app.use(compression());
 app.use(morgan(__LOCAL__ ? 'dev' : 'combined'));
 app.use('/build/client', express.static('build/client'));

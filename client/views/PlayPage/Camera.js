@@ -15,6 +15,8 @@ class Camera extends React.Component {
       navigator.getUserMedia(
         {
           video: true,
+          width: 320,
+          height: 240,
         },
         stream => {
           this.video.srcObject = stream;

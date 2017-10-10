@@ -1,6 +1,6 @@
 @import '../../vendor/css/variables.css';
 
-.landing {  
+.landing {
   &-page {
     text-align: center;
     position: relative;
@@ -8,7 +8,8 @@
     max-width: 414px;
     max-height: 736px;
     z-index: 2;
-  } 
+  }
+
   &-logo {
     width: 70%;
     display: block;
@@ -16,10 +17,10 @@
   }
 
   &-play {
-    background-color: #795AD3;
+    background-color: #795ad3;
     padding: 12px 18px;
     font-size: 35px;
     border-radius: 8px;
-    box-shadow: 0 0 5px rgba(#000, .2);
+    box-shadow: 0 0 5px rgba(#000, 0.2);
   }
 }
