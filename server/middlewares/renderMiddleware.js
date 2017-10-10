@@ -5,6 +5,7 @@ import StaticRouter from 'react-router-dom/StaticRouter';
 import { renderRoutes } from 'react-router-config';
 import routes from '../../client/routes/routes';
 import html from '../render/html';
+import assetsData from '../../build/client/assetsManifest.json';
 
 const PWA_SSR = process.env.PWA_SSR === 'true';
 
@@ -26,6 +27,7 @@ export default (req, res) => {
   res.flush();
   const lateChunk = html.lateChunk(app, Helmet.renderStatic(), {}, context, {
     getAsset: webpack_asset,
+    assetsData,
   });
   res.end(lateChunk);
 };

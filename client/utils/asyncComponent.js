@@ -7,7 +7,7 @@ function asyncComponent(chunkName, getComponent) {
     static loadComponent = getComponent;
 
     _loadComponent = async () => {
-      const mod = await getComponent();
+      const [mod] = await getComponent();
       this.setState({ Component: mod.default || mod });
     };
 

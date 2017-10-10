@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import fs from 'fs';
 import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';

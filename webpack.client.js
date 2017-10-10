@@ -29,6 +29,13 @@ module.exports = {
     jsfeat: 'jsfeat',
   },
 
+  resolve: {
+    alias: {
+      react: 'preact-compat',
+      'react-dom': 'preact-compat',
+    },
+  },
+
   output: {
     path: path.resolve('./build/client'),
     publicPath: __PWA_PUBLIC_PATH__,
@@ -117,7 +124,7 @@ module.exports = {
       new webpack.NamedModulesPlugin(),
       new DashboardPlugin(),
     ]),
-    // new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
+    new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
   ],
 
   devtool: isProd ? 'hidden-source-map' : 'inline-source-map',

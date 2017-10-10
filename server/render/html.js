@@ -23,7 +23,7 @@ export default {
           ${preloadChunks.join('')}`;
   },
 
-  lateChunk(app, head, initialState, context, { getAsset }) {
+  lateChunk(app, head, initialState, context, { getAsset, assetsData }) {
     const cssChunks = context.splitPoints.map(
       chunkName =>
         getAsset(chunkName) && getAsset(chunkName).css
@@ -58,7 +58,7 @@ export default {
           <script>window.module = window.module || {}</script>
           <div id="root">${app}</div>
           <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify({} /* assetsManifest */)}</script>
+          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify(assetsData)}</script>
           <script>window.__WEBPACK_CHUNKS__ =${JSON.stringify(context.splitPoints)};</script>
           <script src="${getAsset('webpackManifest').js}"></script>
           <script src="${getAsset('vendor').js}"></script>
