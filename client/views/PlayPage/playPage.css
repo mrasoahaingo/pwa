@@ -2,3 +2,32 @@
   position: relative;
   z-index: 2;
 }
+
+.camera {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__buttons {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__button {
+    background-color: #d40019;
+    padding: 12px 25px;
+    margin: 5px;
+    font-size: 20px;
+    border-radius: 1px;
+    box-shadow: 0 0 5px rgba(#000, 0.2);
+    text-transform: uppercase;
+  }
+
+  &__preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
