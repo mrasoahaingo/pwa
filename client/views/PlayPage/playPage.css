@@ -2,13 +2,15 @@
   position: relative;
   height: 100%;
   z-index: 2;
+  width: 100%;
 }
 
 .camera {
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
   height: 100%;
+  transform: translate(50%, 0);
 
   &__buttons {
     position: absolute;
@@ -27,10 +29,7 @@
     text-transform: uppercase;
   }
 
-  &__preview,
-  &__result {
-    position: absolute;
-    top: 0;
-    left: 0;
+  &--start-recording {
+    transform: translate(-50%, 0);
   }
 }

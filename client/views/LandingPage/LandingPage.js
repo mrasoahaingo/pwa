@@ -7,8 +7,8 @@ import './landingPage.css';
 
 const LandingPage = () => (
   <div className="landing-page">
-    <img src={logo} alt="" className="landing-logo" />
-    <Link to="/play/" className="landing-play">
+    <img src={logo} alt="" className="landing-page__logo" />
+    <Link to="/play/" className="button landing-page__play">
       Participer
     </Link>
   </div>

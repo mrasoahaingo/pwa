@@ -1,4 +1,4 @@
-import { Wrapper, LandingPage, PlayPage } from './Bundles';
+import { Wrapper, LandingPage, PlayPage, SharePage } from './Bundles';
 
 /*
 import Wrapper from '../views/Wrapper/Wrapper';
@@ -18,6 +18,11 @@ export default [
       {
         component: PlayPage,
         path: '/play/',
+        exact: true,
+      },
+      {
+        component: SharePage,
+        path: '/share/',
         exact: true,
       },
     ],

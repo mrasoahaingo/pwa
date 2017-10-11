@@ -1,22 +1,16 @@
 @import '../../vendor/css/variables.css';
 
-.landing {
-  &-page {
-    z-index: 2;
-  }
+.landing-page {
+  z-index: 2;
+  text-align: center;
 
-  &-logo {
+  &__logo {
     width: 70%;
     display: block;
     margin: 0 auto 40px;
   }
 
-  &-play {
-    background-color: #d40019;
-    padding: 12px 25px;
+  &__play {
     font-size: 35px;
-    border-radius: 1px;
-    box-shadow: 0 0 5px rgba(#000, 0.2);
-    text-transform: uppercase;
   }
 }

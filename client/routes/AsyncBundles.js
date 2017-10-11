@@ -13,3 +13,7 @@ export const PlayPage = asyncComponent('PlayPage', () => Promise.all([
   import('../views/PlayPage/PlayPage' /* webpackChunkName: 'PlayPage' */),
   importCss('PlayPage'),
 ])); // eslint-disable-line
+export const SharePage = asyncComponent('SharePage', () => Promise.all([
+  import('../views/SharePage/SharePage' /* webpackChunkName: 'SharePage' */),
+  importCss('SharePage'),
+])); // eslint-disable-line
