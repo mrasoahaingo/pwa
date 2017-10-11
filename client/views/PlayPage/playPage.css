@@ -25,7 +25,8 @@
     text-transform: uppercase;
   }
 
-  &__preview {
+  &__preview,
+  &__result {
     position: absolute;
     top: 0;
     left: 0;

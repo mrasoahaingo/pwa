@@ -10,7 +10,9 @@ class Camera extends React.Component {
     width: 0,
     height: 0,
     ticks: 0,
+    progress: 0,
     gifSrc: null,
+    status: null,
   };
 
   componentWillMount() {
@@ -55,7 +57,7 @@ class Camera extends React.Component {
     const context = canvas.getContext('2d');
     const interval = 100;
     let frame = 0;
-    let ticks = 35000 / interval;
+    let ticks = 10000 / interval;
     let lastFrameTime = Date.now();
     let timer = null;
 
@@ -78,6 +80,10 @@ class Camera extends React.Component {
       height,
     });
 
+    this.setState(() => ({
+      status: 'start recording',
+    }));
+
     const drawLoop = () => {
       ticks -= 1;
       frame = (frame + 1) % 10;
@@ -88,6 +94,9 @@ class Camera extends React.Component {
 
       if (ticks <= 0) {
         clearInterval(timer);
+        this.setState(() => ({
+          status: 'complete recording',
+        }));
         return;
       }
 
@@ -135,14 +144,20 @@ class Camera extends React.Component {
   generateGif = () => {
     if (!this.gif.running) {
       this.gif.on('start', () => {
-        console.log('starting...');
+        this.setState(() => ({
+          status: 'start gif',
+        }));
       });
       this.gif.on('progress', p => {
-        console.log('progress', Math.round(p * 100));
+        this.setState(() => ({
+          progress: Math.round(p * 100),
+        }));
       });
       this.gif.on('finished', blob => {
-        console.log('finished');
         this.generateFile(blob);
+        this.setState(() => ({
+          status: 'complete gif',
+        }));
       });
 
       this.gif.render();
@@ -160,7 +175,7 @@ class Camera extends React.Component {
   };
 
   render() {
-    const { gifSrc, width, height, ticks } = this.state;
+    const { gifSrc, width, height, ticks, status, progress } = this.state;
     return (
       <div className="camera">
         <video
@@ -188,10 +203,14 @@ class Camera extends React.Component {
           width={width}
         />
         <div className="camera__buttons">
-          <a onClick={this.startRecording} className="camera__button">{ticks}</a>
-          <a onClick={this.generateGif} className="camera__button">generate gif</a>
+          <a onClick={this.startRecording} className="camera__button">
+            {status === 'start recording' ? ticks : 'commencer'}
+          </a>
+          <a onClick={this.generateGif} className="camera__button">
+            {status === 'start gif' ? progress : 'enregistrer'}
+          </a>
         </div>
-        {gifSrc && <img key="gif" src={gifSrc} alt="gif" />}
+        {gifSrc && <img className="camera__result" key="gif" src={gifSrc} alt="gif" />}
       </div>
     );
   }
