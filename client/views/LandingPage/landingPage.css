@@ -2,11 +2,6 @@
 
 .landing {
   &-page {
-    text-align: center;
-    position: relative;
-    width: 100%;
-    max-width: 414px;
-    max-height: 736px;
     z-index: 2;
   }
 

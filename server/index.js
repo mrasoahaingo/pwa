@@ -42,7 +42,7 @@ app.use(csp({
     'style-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com'],
     'font-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
     'img-src': [csp.SELF, 'data:', 'raw.githubusercontent.com'],
-    'worker-src': [csp.SELF, 'blob:'],
+    'child-src': [csp.SELF, 'blob:'],
     'block-all-mixed-content': true,
   },
 }));

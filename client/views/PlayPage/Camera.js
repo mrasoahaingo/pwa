@@ -16,24 +16,27 @@ class Camera extends React.Component {
   };
 
   componentWillMount() {
-    this.setState(() => ({
-      width: Math.min(window.innerWidth, 414),
-      height: Math.min(window.innerWidth, 736),
-    }));
+    if (typeof window !== 'undefined') {
+      this.setState(() => ({
+        width: Math.min(window.innerWidth, 414),
+        height: Math.min(window.innerWidth, 736),
+      }));
+    }
   }
 
   async componentDidMount() {
-    const { width, height } = this.state;
-    if (this.video && typeof navigator !== 'undefined' && typeof navigator.mediaDevices !== 'undefined') {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width,
-          height,
-        },
-      });
+    if (this.video && typeof navigator !== 'undefined') {
+      const constraints = {
+        audio: false,
+        video: true,
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       this.stream = stream;
       this.video.srcObject = stream;
-      this.initTracker();
+      this.video.onloadedmetadata = () => {
+        this.initTracker();
+        this.video.play();
+      };
     }
   }
 

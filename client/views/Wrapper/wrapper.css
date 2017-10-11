@@ -11,7 +11,7 @@
   background-position: center center;
   background-size: cover;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(#000, .3);
+  box-shadow: 0 0 15px rgba(#000, 0.3);
 
   &-bg {
     position: absolute;

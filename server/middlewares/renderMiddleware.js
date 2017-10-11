@@ -1,15 +1,27 @@
 import React from 'react';
+import jsonfile from 'jsonfile';
 import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { renderRoutes } from 'react-router-config';
 import routes from '../../client/routes/routes';
 import html from '../render/html';
-import assetsData from '../../build/client/assetsManifest.json';
 
 const PWA_SSR = process.env.PWA_SSR === 'true';
+let assetsData = false;
+const readAssets = () => new Promise(resolve => {
+  if (assetsData) {
+    resolve(assetsData);
+  } else {
+    jsonfile.readFile('./build/client/assetsManifest.json', (err, obj) => {
+      console.log('qsd', err, obj);
+      resolve(obj);
+    });
+  }
+});
 
-export default (req, res) => {
+export default async (req, res) => {
+  assetsData = await readAssets();
   const context = {
     splitPoints: [],
   };
