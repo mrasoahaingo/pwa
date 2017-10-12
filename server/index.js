@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import express from 'express';
 import helmet from 'helmet';
+import csp from 'express-csp-header';
 import compression from 'compression';
 import morgan from 'morgan';
 import slashes from 'connect-slashes';
@@ -15,20 +16,36 @@ const webpackDevMid = require('webpack-dev-middleware');
 const webpackHotMid = require('webpack-hot-middleware');
 
 if (process.env.PWA_ENV === 'local') {
-  const compiler = webpack(webpackConfig);   // config is required above
-  app.use(webpackDevMid(compiler, {
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath,    // "/static/"
-  }));
+  const compiler = webpack(webpackConfig); // config is required above
+  app.use(
+    webpackDevMid(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath, // "/static/"
+    }),
+  );
   app.use(webpackHotMid(compiler));
 }
 
-app.use(webpackAssets('./build/client/assetsManifest.json', {
-  devMode: process.env.PWA_ENV === 'local',
-}));
+app.use(
+  webpackAssets('./build/client/assetsManifest.json', {
+    devMode: process.env.PWA_ENV === 'local',
+  }),
+);
 
 app.set('trust proxy', true);
 app.use(helmet({ dnsPrefetchControl: false }));
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+app.use(csp({
+  policies: {
+    'default-src': [csp.SELF],
+    'script-src': [csp.SELF, csp.INLINE, csp.EVAL],
+    'style-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com'],
+    'font-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
+    'img-src': [csp.SELF, 'data:', 'raw.githubusercontent.com'],
+    'child-src': [csp.SELF, 'blob:'],
+    'block-all-mixed-content': true,
+  },
+}));
 app.use(compression());
 app.use(morgan(__LOCAL__ ? 'dev' : 'combined'));
 app.use('/build/client', express.static('build/client'));

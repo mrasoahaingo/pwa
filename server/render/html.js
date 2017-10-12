@@ -3,7 +3,13 @@ import { scripts } from './fragments';
 // import assetsManifest from '../../build/client/assetsManifest.json';
 
 export default {
-  earlyChunk(route, { getAsset }) {
+  earlyChunk(context, { getAsset }) {
+    const preloadChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName)
+          ? `<link rel="preload" as="script" href="${getAsset(chunkName).js}">`
+          : '',
+    );
     return `
       <!doctype html>
       <html lang="en">
@@ -14,14 +20,24 @@ export default {
           <link rel="preload" as="script" href="${getAsset('webpackManifest').js}">
           <link rel="preload" as="script" href="${getAsset('vendor').js}">
           <link rel="preload" as="script" href="${getAsset('main').js}">
-          ${!getAsset(route.name) ? '' : `<link rel="preload" as="script" href="${getAsset(route.name).js}">`}`;
+          ${preloadChunks.join('')}`;
   },
 
-  lateChunk(app, head, initialState, route, { getAsset }) {
+  lateChunk(app, head, initialState, context, { getAsset, assetsData }) {
+    const cssChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName) && getAsset(chunkName).css
+          ? `<link rel="stylesheet" type="text/css" href="${getAsset(chunkName).css}">`
+          : '',
+    );
     return `
-          ${__LOCAL__ ? '' : `<style>${getAsset('vendor').css}</style>`}
-          ${__LOCAL__ ? '' : `<style>${getAsset('main').css}</style>`}
-          ${__LOCAL__ || !getAsset(route.name) ? '' : `<style id="${route.name}.css">${getAsset(route.name).css}</style>`}
+          ${__LOCAL__ || !getAsset('vendor').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('vendor').css}">`}
+          ${__LOCAL__ || !getAsset('main').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('main').css}">`}
+          ${__LOCAL__ ? '' : cssChunks.join('')}
           ${__LOCAL__ ? '' : '<link rel="manifest" href="/manifest.json">'}
           <meta name="mobile-web-app-capable" content="yes">
           <meta name="apple-mobile-web-app-capable" content="yes">
@@ -42,7 +58,8 @@ export default {
           <script>window.module = window.module || {}</script>
           <div id="root">${app}</div>
           <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify({} /* assetsManifest */)}</script>
+          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify(assetsData)}</script>
+          <script>window.__WEBPACK_CHUNKS__ =${JSON.stringify(context.splitPoints)};</script>
           <script src="${getAsset('webpackManifest').js}"></script>
           <script src="${getAsset('vendor').js}"></script>
           <script src="${getAsset('main').js}"></script>

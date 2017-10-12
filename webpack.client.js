@@ -29,18 +29,18 @@ module.exports = {
     jsfeat: 'jsfeat',
   },
 
-  output: {
-    path: path.resolve('./build/client'),
-    publicPath: __PWA_PUBLIC_PATH__,
-    filename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
-    chunkFilename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
-  },
-
   resolve: {
     alias: {
       react: 'preact-compat',
       'react-dom': 'preact-compat',
     },
+  },
+
+  output: {
+    path: path.resolve('./build/client'),
+    publicPath: __PWA_PUBLIC_PATH__,
+    filename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
+    chunkFilename: isProd ? 'js/[name].[chunkhash:8].js' : 'js/[name].js',
   },
 
   module: {
@@ -124,6 +124,7 @@ module.exports = {
       new webpack.NamedModulesPlugin(),
       new DashboardPlugin(),
     ]),
+    new webpack.NormalModuleReplacementPlugin(/Bundles\.js/, './AsyncBundles.js'),
   ],
 
   devtool: isProd ? 'hidden-source-map' : 'inline-source-map',

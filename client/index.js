@@ -1,19 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
-import configureStore from './services/store/configureStore';
-import routes from './routes';
+import { BrowserRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
+import routes from './routes/routes';
 
-const store = configureStore(window.__INITIAL_STATE__);
+const renderApp = () => {
+  ReactDOM.render(<BrowserRouter>{renderRoutes(routes)}</BrowserRouter>, document.getElementById('root'));
+};
 
-ReactDOM.render(
-  <Provider store={store} key="provider">
-    <Router
-      routes={routes}
-      history={browserHistory}
-      onUpdate={() => window.scrollTo(0, 0)}
-    />
-  </Provider>,
-  document.getElementById('root'),
-);
+renderApp();
