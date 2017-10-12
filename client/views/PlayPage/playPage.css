@@ -10,7 +10,6 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  transform: translate(50%, 0);
 
   &__buttons {
     position: absolute;
@@ -29,7 +28,10 @@
     text-transform: uppercase;
   }
 
-  &--start-recording {
-    transform: translate(-50%, 0);
+  &__preview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

@@ -108,7 +108,7 @@ class PlayPage extends React.Component {
 
     this.gif = new GIF({
       workers: 16,
-      quality: 20,
+      quality: 24,
       workerScript: gifWorkerFile,
       width,
       height,
@@ -138,11 +138,11 @@ class PlayPage extends React.Component {
       const leftEye = positions[27];
       const rightEye = positions[32];
       context.clearRect(0, 0, width, height);
-      if (leftEye && rightEye) {
+      if (leftEye || rightEye) {
         const x = rightEye[0] - leftEye[0];
-        const y = rightEye[1] - leftEye[1];
+        // const y = rightEye[1] - leftEye[1];
         // const angle = Math.atan(y / x);
-        const distance = Math.sqrt(x * x + y * y);
+        const distance = x;
         const ratio = distance / 60; // 80 = eyes skull distance
         const sized = 200 * ratio;
         const offsetX = distance / 2;
@@ -246,10 +246,10 @@ class PlayPage extends React.Component {
         </div>
         <div className="camera__buttons">
           <a onClick={this.startRecording} className="button camera__button">
-            {status === START_RECORDING ? countDown : 'commencer'}
+            {status === START_RECORDING ? `${countDown}s` : 'enregistrer'}
           </a>
           <a onClick={this.generateGif} className="button camera__button">
-            {status === START_GENERATING ? gifProgress : 'enregistrer'}
+            {status === START_GENERATING ? `${gifProgress}%` : 'sauvegarder'}
           </a>
         </div>
         {gifSrc && <Redirect to={{ pathname: '/share/', state: { gifSrc } }} />}
