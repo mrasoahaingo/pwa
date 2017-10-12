@@ -3,5 +3,6 @@ module.exports = {
     'postcss-import': {},
     'postcss-url': {},
     'postcss-cssnext': {},
+    'postcss-hexrgba': {},
   },
 };

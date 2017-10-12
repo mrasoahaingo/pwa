@@ -1,28 +1,43 @@
 /* eslint-disable max-len, import/no-unresolved */
-import { assets, scripts } from './fragments';
-import assetsManifest from '../../build/client/assetsManifest.json';
+import { scripts } from './fragments';
+// import assetsManifest from '../../build/client/assetsManifest.json';
 
 export default {
-  earlyChunk(route) {
+  earlyChunk(context, { getAsset }) {
+    const preloadChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName)
+          ? `<link rel="preload" as="script" href="${getAsset(chunkName).js}">`
+          : '',
+    );
     return `
       <!doctype html>
       <html lang="en">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-          <link rel="preconnect" href="//static.cdn.com">
-          <link rel="preconnect" href="//images.cdn.com">
-          <link rel="preload" as="script" href="${assets.webpackManifest.js}">
-          <link rel="preload" as="script" href="${assets.vendor.js}">
-          <link rel="preload" as="script" href="${assets.main.js}">
-          ${!assets[route.name] ? '' : `<link rel="preload" as="script" href="${assets[route.name].js}">`}`;
+          <link rel="preconnect" href="//cdnjs.cloudflare.com">
+          <link rel="preload" as="script" href="${getAsset('webpackManifest').js}">
+          <link rel="preload" as="script" href="${getAsset('vendor').js}">
+          <link rel="preload" as="script" href="${getAsset('main').js}">
+          ${preloadChunks.join('')}`;
   },
 
-  lateChunk(app, head, initialState, route) {
+  lateChunk(app, head, initialState, context, { getAsset, assetsData }) {
+    const cssChunks = context.splitPoints.map(
+      chunkName =>
+        getAsset(chunkName) && getAsset(chunkName).css
+          ? `<link rel="stylesheet" type="text/css" href="${getAsset(chunkName).css}">`
+          : '',
+    );
     return `
-          ${__LOCAL__ ? '' : `<style>${assets.vendor.styles}</style>`}
-          ${__LOCAL__ ? '' : `<style>${assets.main.styles}</style>`}
-          ${__LOCAL__ || !assets[route.name] ? '' : `<style id="${route.name}.css">${assets[route.name].styles}</style>`}
+          ${__LOCAL__ || !getAsset('vendor').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('vendor').css}">`}
+          ${__LOCAL__ || !getAsset('main').css
+            ? ''
+            : `<link rel="stylesheet" type="text/css" href="${getAsset('main').css}">`}
+          ${__LOCAL__ ? '' : cssChunks.join('')}
           ${__LOCAL__ ? '' : '<link rel="manifest" href="/manifest.json">'}
           <meta name="mobile-web-app-capable" content="yes">
           <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,14 +55,16 @@ export default {
           ${head.script.toString()}
         </head>
         <body>
+          <script>window.module = window.module || {}</script>
           <div id="root">${app}</div>
           <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify(assetsManifest)}</script>
-          <script src="${assets.webpackManifest.js}"></script>
-          <script src="${assets.vendor.js}"></script>
-          <script src="${assets.main.js}"></script>
+          <script>window.__ASSETS_MANIFEST__ = ${JSON.stringify(assetsData)}</script>
+          <script>window.__WEBPACK_CHUNKS__ =${JSON.stringify(context.splitPoints)};</script>
+          <script src="${getAsset('webpackManifest').js}"></script>
+          <script src="${getAsset('vendor').js}"></script>
+          <script src="${getAsset('main').js}"></script>
           ${__LOCAL__ ? '' : `<script>${scripts.serviceWorker}</script>`}
-        </body>
+          </body>
       </html>`;
   },
 };

@@ -1,8 +1,10 @@
 /* eslint-disable max-len, import/no-unresolved */
-import fs from 'fs';
-import assetsManifest from '../../build/client/assetsManifest.json';
+// import fs from 'fs';
+// import assetsManifest from '../../build/client/assetsManifest.json';
 
-export const assets = Object.keys(assetsManifest)
+export const assets = {};
+
+/* Object.keys(assetsManifest)
   .reduce((obj, entry) => ({
     ...obj,
     [entry]: {
@@ -11,7 +13,7 @@ export const assets = Object.keys(assetsManifest)
         ? fs.readFileSync(`build/client/css/${assetsManifest[entry].css.split('/').pop()}`, 'utf8')
         : undefined,
     },
-  }), {});
+  }), {}); */
 
 export const scripts = {
   serviceWorker: `

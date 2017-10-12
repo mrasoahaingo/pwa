@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { asyncConnect } from 'redux-connect';
+import { renderRoutes } from 'react-router-config';
 import { performanceMark } from '../../services/utils';
+import bg from './bg.jpg';
 import './wrapper.css';
 
 class Wrapper extends Component {
@@ -11,26 +12,20 @@ class Wrapper extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { route } = this.props;
 
     return (
       <div className="wrapper">
         <Helmet title="PWA" />
-        {children}
+        <div className="wrapper-bg" style={{ backgroundImage: `url(${bg})` }} />
+        {renderRoutes(route.routes)}
       </div>
     );
   }
 }
 
 Wrapper.propTypes = {
-  children: PropTypes.element.isRequired,
+  route: PropTypes.object,
 };
 
-const beforeRouteEnter = [];
-
-const mapStateToProps = false;
-
-export default asyncConnect(
-  beforeRouteEnter,
-  mapStateToProps,
-)(Wrapper);
+export default Wrapper;

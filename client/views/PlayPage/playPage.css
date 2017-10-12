@@ -1,0 +1,37 @@
+.play-page {
+  position: relative;
+  height: 100%;
+  z-index: 2;
+  width: 100%;
+}
+
+.camera {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__buttons {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__button {
+    background-color: #d40019;
+    padding: 12px 25px;
+    margin: 5px;
+    font-size: 20px;
+    border-radius: 1px;
+    box-shadow: 0 0 5px rgba(#000, 0.2);
+    text-transform: uppercase;
+  }
+
+  &__preview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

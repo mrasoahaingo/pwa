@@ -1,39 +1,19 @@
+/* global */
+
 import React from 'react';
-import PropTypes from 'prop-types';
-import { asyncConnect } from 'redux-connect';
-import isEmpty from 'lodash/isEmpty';
-import * as contentActionCreators from '../../services/content/contentDuck';
-import Testimonials from './Testimonials/Testimonials';
+import { Link } from 'react-router-dom';
+import logo from './logo.png';
 import './landingPage.css';
 
-const LandingPage = ({
-  content: { testimonials },
-}) => (
+const LandingPage = () => (
   <div className="landing-page">
-    <h1>PWA</h1>
-    <p>An opinionated progressive web app boilerplate</p>
-    <Testimonials testimonials={testimonials} />
-    <Testimonials testimonials={testimonials} />
+    <img src={logo} alt="" className="landing-page__logo" />
+    <Link to="/play/" className="button landing-page__play">
+      Participer
+    </Link>
   </div>
 );
 
-LandingPage.propTypes = {
-  content: PropTypes.object.isRequired,
-};
+LandingPage.propTypes = {};
 
-const beforeRouteEnter = [{
-  promise: ({ store: { dispatch, getState } }) => {
-    const promise = isEmpty(getState().content.testimonials)
-      ? dispatch(contentActionCreators.getTestimonials(3)) : null;
-    return __BROWSER__ ? null : promise;
-  },
-}];
-
-const mapStateToProps = (state) => ({
-  content: state.content,
-});
-
-export default asyncConnect(
-  beforeRouteEnter,
-  mapStateToProps,
-)(LandingPage);
+export default LandingPage;

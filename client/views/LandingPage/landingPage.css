@@ -1,6 +1,16 @@
 @import '../../vendor/css/variables.css';
 
 .landing-page {
-  margin-top: 12px;
+  z-index: 2;
   text-align: center;
+
+  &__logo {
+    width: 70%;
+    display: block;
+    margin: 0 auto 40px;
+  }
+
+  &__play {
+    font-size: 35px;
+  }
 }

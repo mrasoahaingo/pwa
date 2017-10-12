@@ -1,7 +1,9 @@
 @import './variables.css';
+@import url('https://fonts.googleapis.com/css?family=Passion+One');
 
 a {
-  color: inherit;
+  font-family: 'Passion One', system-ui;
+  color: rgba(#FFF, .8);
   text-decoration: none;
 }
 
@@ -26,4 +28,13 @@ h5,
 h6 {
   padding: 0;
   margin: 0;
+}
+
+.button {
+  background-color: #d40019;
+  padding: 12px 25px;
+  border-radius: 1px;
+  box-shadow: 0 0 5px rgba(#000, 0.2);
+  text-transform: uppercase;
+  display: inline-block;
 }
