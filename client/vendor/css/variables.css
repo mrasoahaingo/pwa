@@ -1,17 +1,20 @@
 /* Colors */
 :root {
-  --color-primary: #5500eb;
-  --color-secondary: #4a4a4a;
+  --color-primary: rgba(#000, 0.9);
+  --color-secondary: rgba(#000, 0.7);
   --color-tertiary: #9b9b9b;
   --color-quaternary: #e0e0e0;
   --color-quinary: #f1f1f1;
   --color-error: #d00;
   --color-link: #0d0;
-  
-  --translateX: 100%;
 }
 
 /* Shadows */
 :root {
   --shadow-primary: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+:root {
+  --header-height: 50px;
 }

@@ -25,10 +25,6 @@ module.exports = {
     ],
   },
 
-  externals: {
-    jsfeat: 'jsfeat',
-  },
-
   resolve: {
     alias: {
       react: 'preact-compat',

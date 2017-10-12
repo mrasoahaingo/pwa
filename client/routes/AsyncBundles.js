@@ -5,15 +5,15 @@ export const Wrapper = asyncComponent('Wrapper', () => Promise.all([
   import('../views/Wrapper/Wrapper' /* webpackChunkName: 'Wrapper' */),
   importCss('Wrapper'),
 ])); // eslint-disable-line
-export const LandingPage = asyncComponent('LandingPage', () => Promise.all([
-  import('../views/LandingPage/LandingPage' /* webpackChunkName: 'LandingPage' */),
-  importCss('LandingPage'),
+export const ArticlePage = asyncComponent('ArticlePage', () => Promise.all([
+  import('../views/ArticlePage/ArticlePage' /* webpackChunkName: 'ArticlePage' */),
+  importCss('ArticlePage'),
 ])); // eslint-disable-line
-export const PlayPage = asyncComponent('PlayPage', () => Promise.all([
-  import('../views/PlayPage/PlayPage' /* webpackChunkName: 'PlayPage' */),
-  importCss('PlayPage'),
+export const SearchPage = asyncComponent('SearchPage', () => Promise.all([
+  import('../views/SearchPage/SearchPage' /* webpackChunkName: 'SearchPage' */),
+  importCss('SearchPage'),
 ])); // eslint-disable-line
-export const SharePage = asyncComponent('SharePage', () => Promise.all([
-  import('../views/SharePage/SharePage' /* webpackChunkName: 'SharePage' */),
-  importCss('SharePage'),
+export const HomePage = asyncComponent('HomePage', () => Promise.all([
+  import('../views/HomePage/HomePage' /* webpackChunkName: 'HomePage' */),
+  importCss('HomePage'),
 ])); // eslint-disable-line

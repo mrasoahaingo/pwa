@@ -1,28 +1,32 @@
-import { Wrapper, LandingPage, PlayPage, SharePage } from './Bundles';
-
-/*
-import Wrapper from '../views/Wrapper/Wrapper';
-import LandingPage from '../views/LandingPage/LandingPage';
-import PlayPage from '../views/PlayPage/PlayPage';
-*/
+import {
+  Wrapper,
+  ArticlePage,
+  SearchPage,
+  HomePage,
+} from './Bundles';
 
 export default [
   {
     component: Wrapper,
     routes: [
       {
-        component: LandingPage,
+        component: ArticlePage,
+        path: '/article/:id',
+        exact: true,
+      },
+      {
+        component: SearchPage,
+        path: '/search/:term',
+        exact: true,
+      },
+      {
+        component: HomePage,
+        path: '/:name',
+        exact: true,
+      },
+      {
+        component: HomePage,
         path: '/',
-        exact: true,
-      },
-      {
-        component: PlayPage,
-        path: '/play/',
-        exact: true,
-      },
-      {
-        component: SharePage,
-        path: '/share/',
         exact: true,
       },
     ],
