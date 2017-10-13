@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { withRouter } from 'react-router';
-import { getArticle } from '../../utils/mock';
+import withSsr from '../../utils/withSsr';
 import './articlePage.css';
 
 const ArticlePage = ({ title, snippet }) => (
@@ -18,4 +17,4 @@ ArticlePage.propTypes = {
   snippet: PropTypes.string.isRequired,
 };
 
-export default withRouter(({ match: { params: { id } } }) => <ArticlePage {...getArticle(id)} />);
+export default withSsr(ArticlePage);

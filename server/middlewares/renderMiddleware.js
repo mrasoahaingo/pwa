@@ -3,8 +3,9 @@ import jsonfile from 'jsonfile';
 import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import StaticRouter from 'react-router-dom/StaticRouter';
-import { renderRoutes } from 'react-router-config';
+import { matchPath } from 'react-router';
 import routes from '../../client/routes/routes';
+import App from '../../client/App';
 import html from '../render/html';
 
 const PWA_SSR = process.env.PWA_SSR === 'true';
@@ -14,13 +15,38 @@ const readAssets = () => new Promise(resolve => {
     resolve(assetsData);
   } else {
     jsonfile.readFile('./build/client/assetsManifest.json', (err, obj) => {
-      console.log('qsd', err, obj);
       resolve(obj);
     });
   }
 });
 
 export default async (req, res) => {
+  const matches = routes.map((route) => {
+    const match = matchPath(req.url, route.path, route);
+    // We then look for static getInitialData function on each top level component
+    if (match) {
+      const obj = {
+        route,
+        match,
+        promise: route.component.getInitialData
+          ? route.component.getInitialData({ match, req, res })
+          : Promise.resolve({}),
+      };
+      return obj;
+    }
+    return null;
+  });
+
+  if (matches.length === 0) {
+    res.status(404).send('Not Found');
+  }
+
+  // Now we pull out all the promises we found into an array.
+  const promises = matches.map(match => (match ? match.promise : {}));
+
+    // We block rendering until all promises have resolved
+  const initialState = await Promise.all(promises);
+  console.log('---------------initialState', initialState);
   assetsData = await readAssets();
   const context = {
     splitPoints: [],
@@ -29,7 +55,7 @@ export default async (req, res) => {
   const app = PWA_SSR
     ? renderToString(
         <StaticRouter location={req.url} context={context}>
-          {renderRoutes(routes)}
+          <App routes={routes} initialData={initialState} />
         </StaticRouter>,
       )
     : '';
@@ -37,7 +63,7 @@ export default async (req, res) => {
   const earlyChunk = html.earlyChunk(context, { getAsset: webpack_asset });
   res.write(earlyChunk);
   res.flush();
-  const lateChunk = html.lateChunk(app, Helmet.renderStatic(), {}, context, {
+  const lateChunk = html.lateChunk(app, Helmet.renderStatic(), initialState, context, {
     getAsset: webpack_asset,
     assetsData,
   });

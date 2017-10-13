@@ -1,10 +1,6 @@
 import asyncComponent from '../utils/asyncComponent';
 import importCss from '../utils/importCss';
 
-export const Wrapper = asyncComponent('Wrapper', () => Promise.all([
-  import('../views/Wrapper/Wrapper' /* webpackChunkName: 'Wrapper' */),
-  importCss('Wrapper'),
-])); // eslint-disable-line
 export const ArticlePage = asyncComponent('ArticlePage', () => Promise.all([
   import('../views/ArticlePage/ArticlePage' /* webpackChunkName: 'ArticlePage' */),
   importCss('ArticlePage'),

@@ -4,17 +4,28 @@ import PropTypes from 'prop-types';
 function syncComponent(chunkName, mod) {
   const Component = mod.default ? mod.default : mod; // es6 module compat
 
-  function SyncComponent(props) {
-    if (props.staticContext.splitPoints) {
-      props.staticContext.splitPoints.push(chunkName);
+  class SyncComponent extends React.Component {
+    static propTypes = {
+      staticContext: PropTypes.object,
+    };
+
+    static getInitialData(ctx) {
+      return Component.getInitialData
+        ? Component.getInitialData(ctx)
+        : Promise.resolve({});
     }
 
-    return (<Component {...props} />);
-  }
+    constructor(props) {
+      super(props);
+      if (props.staticContext.splitPoints) {
+        props.staticContext.splitPoints.push(chunkName);
+      }
+    }
 
-  SyncComponent.propTypes = {
-    staticContext: PropTypes.object,
-  };
+    render() {
+      return (<Component {...this.props} />);
+    }
+  }
 
   return SyncComponent;
 }

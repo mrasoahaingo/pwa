@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { getBlocs } from '../../utils/mock';
+import withSsr from '../../utils/withSsr';
 import './homePage.css';
 
 const HomePageArticle = ({ title, snippet, thumbnail, id }) => (
@@ -15,10 +15,11 @@ const HomePageArticle = ({ title, snippet, thumbnail, id }) => (
   </article>
 );
 HomePageArticle.defaultProps = {
+  id: null,
   thumbnail: '',
 };
 HomePageArticle.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   title: PropTypes.string.isRequired,
   snippet: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
@@ -44,20 +45,34 @@ HomePageBloc.propTypes = {
   ).isRequired,
 };
 
-const HomePage = ({ name, blocs }) => (
-  <section className="home-page">
-    <Helmet title={`Home Page ${name}`} />
-    {blocs.map(bloc => (
-      <HomePageBloc {...bloc} />
-    ))}
-  </section>
-);
+class HomePage extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    blocs: PropTypes.arrayOf(
+      PropTypes.shape(HomePageBloc.propTypes),
+    ).isRequired,
+  }
 
-HomePage.propTypes = {
-  name: PropTypes.string.isRequired,
-  blocs: PropTypes.arrayOf(
-    PropTypes.shape(HomePageBloc.propTypes),
-  ).isRequired,
-};
+  static defaultProps = {
+    name: 'News',
+  }
 
-export default () => <HomePage name="Actualité" blocs={getBlocs()} />;
+  static getInitialData = async () => {
+    const data = await fetch('http://localhost:8000/page?pageId=01001');
+    return data.json();
+  }
+
+  render() {
+    const { blocs, name } = this.props;
+    return (
+      <section className="home-page">
+        <Helmet title={`Home Page ${name}`} />
+        {blocs.map(bloc => (
+          <HomePageBloc {...bloc} />
+        ))}
+      </section>
+    );
+  }
+}
+
+export default withSsr(HomePage);
