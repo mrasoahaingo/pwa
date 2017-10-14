@@ -1,19 +1,16 @@
 /* eslint-disable max-len, import/no-unresolved */
-// import fs from 'fs';
-// import assetsManifest from '../../build/client/assetsManifest.json';
+import fs from 'fs';
 
-export const assets = {};
-
-/* Object.keys(assetsManifest)
+export const styles = (assetsData) => Object.keys(assetsData)
   .reduce((obj, entry) => ({
     ...obj,
     [entry]: {
-      ...assetsManifest[entry],
-      styles: assetsManifest[entry].css
-        ? fs.readFileSync(`build/client/css/${assetsManifest[entry].css.split('/').pop()}`, 'utf8')
+      ...assetsData[entry],
+      styles: assetsData[entry].css
+        ? fs.readFileSync(`build/client/css/${assetsData[entry].css.split('/').pop()}`, 'utf8')
         : undefined,
     },
-  }), {}); */
+  }), {});
 
 export const scripts = {
   serviceWorker: `

@@ -1,6 +1,16 @@
 /* eslint-disable max-len, import/no-unresolved */
-import { scripts } from './fragments';
+import { scripts, styles } from './fragments';
 // import assetsManifest from '../../build/client/assetsManifest.json';
+
+let criticals = false;
+
+const getCriticals = (assetsData) => {
+  if (criticals) {
+    return criticals;
+  }
+
+  return styles(assetsData);
+};
 
 export default {
   earlyChunk(context, { getAsset }) {
@@ -20,24 +30,18 @@ export default {
           <link rel="preload" as="script" href="${getAsset('webpackManifest').js}">
           <link rel="preload" as="script" href="${getAsset('vendor').js}">
           <link rel="preload" as="script" href="${getAsset('main').js}">
-          ${preloadChunks.join('')}`;
+          ${preloadChunks.join('\n')}`;
   },
 
   lateChunk(app, head, initialState, context, { getAsset, assetsData }) {
-    const cssChunks = context.splitPoints.map(
-      chunkName =>
-        getAsset(chunkName) && getAsset(chunkName).css
-          ? `<link rel="stylesheet" type="text/css" href="${getAsset(chunkName).css}">`
+    criticals = getCriticals(assetsData);
+    const cssChunks = [...context.splitPoints, 'vendor', 'main'].map(
+      chunkName => criticals[chunkName].styles
+          ? `<style>${criticals[chunkName].styles}</style>`
           : '',
     );
     return `
-          ${__LOCAL__ || !getAsset('vendor').css
-            ? ''
-            : `<link rel="stylesheet" type="text/css" href="${getAsset('vendor').css}">`}
-          ${__LOCAL__ || !getAsset('main').css
-            ? ''
-            : `<link rel="stylesheet" type="text/css" href="${getAsset('main').css}">`}
-          ${__LOCAL__ ? '' : cssChunks.join('')}
+          ${__LOCAL__ ? '' : cssChunks.join('\n')}
           ${__LOCAL__ ? '' : '<link rel="manifest" href="/manifest.json">'}
           <meta name="mobile-web-app-capable" content="yes">
           <meta name="apple-mobile-web-app-capable" content="yes">
