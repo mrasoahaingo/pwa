@@ -1,3 +1,3 @@
 export default {
-  apiUrl: 'https://randomuser.me',
+  apiUrl: 'https://pwa-horizon.now.sh',
 };

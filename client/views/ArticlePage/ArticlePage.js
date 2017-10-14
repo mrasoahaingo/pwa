@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import withSsr from '../../utils/withSsr';
+import config from '../../../config';
 import './articlePage.css';
 
 class ArticlePage extends React.Component {
@@ -15,7 +16,7 @@ class ArticlePage extends React.Component {
   }
 
   static getInitialData = async ({ match }) => {
-    const data = await fetch(`http://localhost:8000/api/article?articleId=${match.params.id}`);
+    const data = await fetch(`${config.apiUrl}/api/article?articleId=${match.params.id}`);
     return data.json();
   }
 

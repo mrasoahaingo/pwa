@@ -1,3 +1,3 @@
 export default {
-  apiUrl: 'https://randomuser.me',
+  apiUrl: 'http://localhost:8000',
 };

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import withSsr from '../../utils/withSsr';
+import config from '../../../config';
 import './homePage.css';
 
 const HomePageArticle = ({ title, snippet, thumbnail, id }) => (
@@ -58,7 +59,7 @@ class HomePage extends React.Component {
   }
 
   static getInitialData = async () => {
-    const data = await fetch('http://localhost:8000/api/page?pageId=01001');
+    const data = await fetch(`${config.apiUrl}/api/page?pageId=01001`);
     return data.json();
   }
 
