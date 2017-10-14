@@ -19,7 +19,7 @@ export default (Page) => {
     static getInitialData(ctx) {
       return Page.getInitialData
         ? Page.getInitialData(ctx)
-        : Promise.resolve({});
+        : Promise.resolve(null);
     }
 
     constructor(props) {
@@ -41,28 +41,20 @@ export default (Page) => {
       this.ignoreLastFetch = true;
     }
 
-    fetchData = () => {
+    fetchData = async () => {
       // if this.state.data is null, that means that the we are on the client.
       // To get the data we need, we just call getInitialData again on mount.
       if (!this.ignoreLastFetch) {
-        this.setState({ isLoading: true });
-        this.constructor.getInitialData({ match: this.props.match }).then(
-          data => {
-            this.setState({ data, isLoading: false });
-          },
-          error => {
-            this.setState(() => ({
-              data: { error },
-              isLoading: false,
-            }));
-          },
-        );
+        this.setState(() => ({ isLoading: true }));
+        const data = await this.constructor.getInitialData({ match: this.props.match });
+        this.setState(() => ({ data, isLoading: false, isLoaded: true }));
       }
     };
 
     render() {
       // Flatten out all the props.
       const { initialData, ...rest } = this.props;
+      const { data, isLoading } = this.state;
 
       //  if we wanted to create an app-wide error component,
       //  we could also do that here using <HTTPStatus />. However, it is
@@ -78,8 +70,8 @@ export default (Page) => {
         <Page
           {...rest}
           refetch={this.fetchData}
-          isLoading={this.state.isLoading}
-          {...this.state.data}
+          isLoading={isLoading}
+          {...data}
         />
       );
     }

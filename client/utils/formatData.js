@@ -1,11 +1,11 @@
-export const getBlocs = (data) =>
+export const getFormattedBlocs = (data) =>
   data.page.rankings.News.blocs
   .filter(bloc => !(!bloc.profil || bloc.feed.length === 0))
   .map(bloc => {
     const articles = [];
     bloc.feed.forEach(article => {
       const newArticle = {
-        id: article.srcId,
+        id: article.remoteId,
         title: article.default.title,
         snippet: article.default.snippet,
         image: article.default.image,
@@ -19,4 +19,7 @@ export const getBlocs = (data) =>
     return newBloc;
   });
 
-export const getArticle = (data) => data;
+export const getFormattedArticle = (data) => ({
+  title: (data.news.feed[0] || { default: {} }).default.title,
+  text: (data.news.feed[0] || {}).text,
+});

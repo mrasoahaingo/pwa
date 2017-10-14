@@ -58,7 +58,7 @@ class HomePage extends React.Component {
   }
 
   static getInitialData = async () => {
-    const data = await fetch('http://localhost:8000/page?pageId=01001');
+    const data = await fetch('http://localhost:8000/api/page?pageId=01001');
     return data.json();
   }
 

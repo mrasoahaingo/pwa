@@ -7,7 +7,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import slashes from 'connect-slashes';
 import renderMiddleware from './middlewares/renderMiddleware';
-import { getBlocs } from '../client/utils/mock';
+import { getFormattedBlocs, getFormattedArticle } from '../client/utils/formatData';
 
 const app = express();
 
@@ -50,19 +50,20 @@ app.use(csp({
 }));
 app.use(compression());
 app.use(morgan(__LOCAL__ ? 'dev' : 'combined'));
-app.use('/page', async (req, res) => {
+app.use('/api/page', async (req, res) => {
+  console.log('--------------', req.headers.referer);
   const { pageId } = req.query;
   const data = await fetch(`https://api.fidji.lefigaro.fr/export/page/?euid=${pageId}&source=lefigaro.fr&type_ranking%5B0%5D=News&oneprofile=1`);
   const result = await data.json();
-  res.json({ blocs: getBlocs(result) });
+  res.json({ blocs: getFormattedBlocs(result) });
 });
-app.use('/article', async (req, res) => {
+app.use('/api/article', async (req, res) => {
   const { articleId } = req.query;
   const data = await fetch(`https://api.fidji.lefigaro.fr/export/articles/?source=lefigaro.fr&euid=${articleId}&limit=1&full=1&oneprofile=1&mediaref=1`);
   const result = await data.json();
-  res.json(result);
+  res.json(getFormattedArticle(result));
 });
-app.use('/comments', async (req, res) => {
+app.use('/api/comments', async (req, res) => {
   const { articleId } = req.query;
   const data = await fetch(`http://plus.lefigaro.fr/fpservice/commentaires/sdv/${articleId}/json?page=0&parents_limit=20`);
   const result = await data.json();

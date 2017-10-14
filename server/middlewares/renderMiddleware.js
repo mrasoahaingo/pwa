@@ -30,7 +30,7 @@ export default async (req, res) => {
         match,
         promise: route.component.getInitialData
           ? route.component.getInitialData({ match, req, res })
-          : Promise.resolve({}),
+          : Promise.resolve(null),
       };
       return obj;
     }
@@ -42,11 +42,11 @@ export default async (req, res) => {
   }
 
   // Now we pull out all the promises we found into an array.
-  const promises = matches.map(match => (match ? match.promise : {}));
+  const promises = matches.map(match => (match ? match.promise : null));
 
     // We block rendering until all promises have resolved
   const initialState = await Promise.all(promises);
-  console.log('---------------initialState', initialState);
+
   assetsData = await readAssets();
   const context = {
     splitPoints: [],

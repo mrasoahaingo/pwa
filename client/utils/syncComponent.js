@@ -12,7 +12,7 @@ function syncComponent(chunkName, mod) {
     static getInitialData(ctx) {
       return Component.getInitialData
         ? Component.getInitialData(ctx)
-        : Promise.resolve({});
+        : Promise.resolve(null);
     }
 
     constructor(props) {

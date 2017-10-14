@@ -16,7 +16,7 @@ const App = ({ routes, initialData }) => (
           render={props =>
             React.createElement(route.component, {
               ...props,
-              initialData: initialData[index] || {},
+              initialData: initialData[index] || null,
             })}
         />
       ))}
