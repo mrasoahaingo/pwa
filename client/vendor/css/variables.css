@@ -17,4 +17,5 @@
 /* Header */
 :root {
   --header-height: 50px;
+  --header-bg-color: #32343e;
 }

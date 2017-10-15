@@ -6,12 +6,16 @@ import withSsr from '../../utils/withSsr';
 import config from '../../../config';
 import './homePage.css';
 
-const HomePageArticle = ({ title, snippet, thumbnail, id }) => (
-  <article>
+const HomePageArticle = ({ title, snippet, image, id }) => (
+  <article className="bloc-article">
     <Link to={{ pathname: `/article/${id}` }}>
-      {thumbnail && <img src={thumbnail} alt={title} />}
-      <h2>{title}</h2>
-      <p>{snippet}</p>
+      {image && (
+        <picture className="bloc-article__picture">
+          <img src={image} alt={title} />
+        </picture>
+      )}
+      <h2 className="bloc-article__title" dangerouslySetInnerHTML={{ __html: title }} />
+      <p className="bloc-article__snippet" dangerouslySetInnerHTML={{ __html: snippet }} />
     </Link>
   </article>
 );
@@ -23,24 +27,28 @@ HomePageArticle.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string.isRequired,
   snippet: PropTypes.string.isRequired,
-  thumbnail: PropTypes.string,
+  image: PropTypes.string,
 };
 
-const HomePageBloc = ({ title, articles }) => (
-  <section>
-    {title && <h3>{title}</h3>}
-    <section>
-      {articles.map(article => (
-        <HomePageArticle {...article} />
-      ))}
-    </section>
+const HomePageBloc = ({ title, articles, skin }) => (
+  <section className={`bloc bloc--${skin}`}>
+    {title && <h3 className="bloc__title">{title}</h3>}
+    {articles.length > 0 && (
+      <section className="bloc__articles">
+        {articles.map(article => (
+          <HomePageArticle {...article} />
+        ))}
+      </section>
+    )}
   </section>
 );
 HomePageBloc.defaultProps = {
   title: '',
+  skin: 'news',
 };
 HomePageBloc.propTypes = {
   title: PropTypes.string,
+  skin: PropTypes.string,
   articles: PropTypes.arrayOf(
     PropTypes.shape(HomePageArticle.propTypes),
   ).isRequired,
@@ -48,6 +56,7 @@ HomePageBloc.propTypes = {
 
 class HomePage extends React.Component {
   static propTypes = {
+    isLoading: PropTypes.bool.isRequired,
     name: PropTypes.string,
     blocs: PropTypes.arrayOf(
       PropTypes.shape(HomePageBloc.propTypes),
@@ -64,8 +73,8 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { blocs, name } = this.props;
-    return (
+    const { blocs, name, isLoading } = this.props;
+    return isLoading ? <div>loading...</div> : (
       <section className="home-page">
         <Helmet title={`Home Page ${name}`} />
         {blocs.map(bloc => (

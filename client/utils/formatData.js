@@ -1,8 +1,13 @@
 export const getFormattedBlocs = (data) =>
   data.page.rankings.News.blocs
-  .filter(bloc => !(!bloc.profil || bloc.feed.length === 0))
   .map(bloc => {
     const articles = [];
+    if (!bloc.profil || bloc.feed.length === 0) {
+      return {
+        title: bloc.family,
+        articles,
+      };
+    }
     bloc.feed.forEach(article => {
       const newArticle = {
         id: article.remoteId,
@@ -15,11 +20,14 @@ export const getFormattedBlocs = (data) =>
     const newBloc = {
       title: bloc.titre,
       articles,
+      skin: bloc.skin,
     };
     return newBloc;
   });
 
 export const getFormattedArticle = (data) => ({
   title: (data.news.feed[0] || { default: {} }).default.title,
+  image: (data.news.feed[0] || { default: {} }).default.image,
   text: (data.news.feed[0] || {}).text,
+  remoteId: (data.news.feed[0] || {}).remoteId,
 });

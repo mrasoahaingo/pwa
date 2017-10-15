@@ -44,18 +44,17 @@ app.use(csp({
     'script-src': [csp.SELF, csp.INLINE, csp.EVAL, 'blob:'],
     'style-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com'],
     'font-src': [csp.SELF, csp.INLINE, 'fonts.googleapis.com', 'fonts.gstatic.com'],
-    'img-src': [csp.SELF, 'data:', 'raw.githubusercontent.com'],
+    'img-src': [csp.SELF, 'data:', 'www.lefigaro.fr', 'i.f1g.fr', 'lefigaro.brightcove.com.edgesuite.net', 'icongr.am', 'raw.githubusercontent.com'],
     'block-all-mixed-content': true,
   },
 }));
 app.use(compression());
 app.use(morgan(__LOCAL__ ? 'dev' : 'combined'));
 app.use('/api/page', async (req, res) => {
-  console.log('--------------', req.headers.referer);
   const { pageId } = req.query;
   const data = await fetch(`https://api.fidji.lefigaro.fr/export/page/?euid=${pageId}&source=lefigaro.fr&type_ranking%5B0%5D=News&oneprofile=1`);
   const result = await data.json();
-  res.json({ blocs: getFormattedBlocs(result) });
+  res.json({ remoteId: pageId, blocs: getFormattedBlocs(result) });
 });
 app.use('/api/article', async (req, res) => {
   const { articleId } = req.query;
