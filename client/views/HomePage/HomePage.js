@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import CellMeasurer from 'react-virtualized/dist/commonjs/CellMeasurer/CellMeasurer';
+import CellMeasurerCache from 'react-virtualized/dist/commonjs/CellMeasurer/CellMeasurerCache';
+import List from 'react-virtualized/dist/commonjs/List/List';
 import withSsr from '../../utils/withSsr';
 import config from '../../../config';
 import './homePage.css';
@@ -29,6 +33,37 @@ HomePageArticle.propTypes = {
   snippet: PropTypes.string.isRequired,
   image: PropTypes.string,
 };
+
+const cache = new CellMeasurerCache({
+  fixedWidth: true,
+  defaultHeight: 64,
+});
+
+const HomePageBlocs = (blocs) => (
+  <AutoSizer>
+    {({ height, width }) => (
+      <List
+        height={height}
+        width={width}
+        deferredMeasurementCache={cache}
+        overscanRowCount={10}
+        rowCount={blocs.length}
+        rowHeight={cache.rowHeight}
+        rowRenderer={({ index, key, parent }) => (
+          <CellMeasurer
+            cache={cache}
+            columnCount={0}
+            key={key}
+            parent={parent}
+            rowIndex={index}
+          >
+            <HomePageBloc {...blocs[index]} />
+          </CellMeasurer>
+        )}
+      />
+    )}
+  </AutoSizer>
+);
 
 const HomePageBloc = ({ title, articles, skin }) => (
   <section className={`bloc bloc--${skin}`}>
@@ -77,9 +112,7 @@ class HomePage extends React.Component {
     return isLoading ? <div>loading...</div> : (
       <section className="home-page">
         <Helmet title={`Home Page ${name}`} />
-        {blocs.map(bloc => (
-          <HomePageBloc {...bloc} />
-        ))}
+        {HomePageBlocs(blocs)}
       </section>
     );
   }
