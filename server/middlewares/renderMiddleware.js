@@ -21,10 +21,12 @@ const readAssets = () => new Promise(resolve => {
 });
 
 export default async (req, res) => {
+  let found = false;
   const matches = routes.map((route) => {
     const match = matchPath(req.url, route.path, route);
     // We then look for static getInitialData function on each top level component
-    if (match) {
+    if (!found && match) {
+      console.log(match);
       const obj = {
         route,
         match,
@@ -32,6 +34,7 @@ export default async (req, res) => {
           ? route.component.getInitialData({ match, req, res })
           : Promise.resolve(null),
       };
+      found = true;
       return obj;
     }
     return null;

@@ -5,32 +5,33 @@ import { Link } from 'react-router-dom';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import CellMeasurer from 'react-virtualized/dist/commonjs/CellMeasurer/CellMeasurer';
 import CellMeasurerCache from 'react-virtualized/dist/commonjs/CellMeasurer/CellMeasurerCache';
+import LazyLoad from 'react-lazyload';
 import List from 'react-virtualized/dist/commonjs/List/List';
 import withSsr from '../../utils/withSsr';
 import config from '../../../config';
 import './homePage.css';
 
-const HomePageArticle = ({ title, snippet, image, id }) => (
+const HomePageArticle = ({ title, snippet, image, remoteId, measure }) => (
   <article className="bloc-article">
-    <Link to={{ pathname: `/article/${id}` }}>
-      {image && (
-        <picture className="bloc-article__picture">
-          <img src={image} alt={title} />
-        </picture>
-      )}
+    <Link to={{ pathname: `/article/${remoteId}` }}>
+      <picture className="bloc-article__picture">
+        {image && image.match('https://') && <img src={image} alt={title} onLoad={measure} />}
+      </picture>
       <h2 className="bloc-article__title" dangerouslySetInnerHTML={{ __html: title }} />
       <p className="bloc-article__snippet" dangerouslySetInnerHTML={{ __html: snippet }} />
     </Link>
   </article>
 );
 HomePageArticle.defaultProps = {
-  id: null,
-  thumbnail: '',
+  remoteId: null,
+  image: null,
+  title: '',
+  snippet: '',
 };
 HomePageArticle.propTypes = {
-  id: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  snippet: PropTypes.string.isRequired,
+  remoteId: PropTypes.string,
+  title: PropTypes.string,
+  snippet: PropTypes.string,
   image: PropTypes.string,
 };
 
@@ -39,17 +40,17 @@ const cache = new CellMeasurerCache({
   defaultHeight: 64,
 });
 
-const HomePageBlocs = (blocs) => (
+const HomePageBlocsVirtualized = (blocs) => (
   <AutoSizer>
     {({ height, width }) => (
       <List
         height={height}
         width={width}
         deferredMeasurementCache={cache}
-        overscanRowCount={10}
+        overscanRowCount={0}
         rowCount={blocs.length}
         rowHeight={cache.rowHeight}
-        rowRenderer={({ index, key, parent }) => (
+        rowRenderer={({ index, key, parent, style }) => (
           <CellMeasurer
             cache={cache}
             columnCount={0}
@@ -57,7 +58,11 @@ const HomePageBlocs = (blocs) => (
             parent={parent}
             rowIndex={index}
           >
-            <HomePageBloc {...blocs[index]} />
+          {({ measure }) => (
+            <div style={style}>
+              <HomePageBloc {...blocs[index]} measure={measure} />
+            </div>
+          )}
           </CellMeasurer>
         )}
       />
@@ -65,13 +70,13 @@ const HomePageBlocs = (blocs) => (
   </AutoSizer>
 );
 
-const HomePageBloc = ({ title, articles, skin }) => (
+const HomePageBloc = ({ title, articles, skin, measure }) => (
   <section className={`bloc bloc--${skin}`}>
     {title && <h3 className="bloc__title">{title}</h3>}
     {articles.length > 0 && (
       <section className="bloc__articles">
         {articles.map(article => (
-          <HomePageArticle {...article} />
+          <HomePageArticle key={article.remoteId} {...article} measure={measure} />
         ))}
       </section>
     )}
@@ -89,30 +94,35 @@ HomePageBloc.propTypes = {
   ).isRequired,
 };
 
+const HomePageBlocsPlaceholder = () => (
+  <HomePageBloc articles={[{ remoteId: 'p1' }, { remoteId: 'p2' }, { remoteId: 'p3' }]} />
+);
+
 class HomePage extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     name: PropTypes.string,
     blocs: PropTypes.arrayOf(
       PropTypes.shape(HomePageBloc.propTypes),
-    ).isRequired,
+    ),
   }
 
   static defaultProps = {
     name: 'News',
+    blocs: [],
   }
 
   static getInitialData = async () => {
-    const data = await fetch(`${config.apiUrl}/api/page?pageId=01001`);
+    const data = await fetch(`${config.apiUrl}/api/page?remoteId=01001`);
     return data.json();
   }
 
   render() {
     const { blocs, name, isLoading } = this.props;
-    return isLoading ? <div>loading...</div> : (
+    return (
       <section className="home-page">
         <Helmet title={`Home Page ${name}`} />
-        {HomePageBlocs(blocs)}
+        {isLoading ? HomePageBlocsPlaceholder() : HomePageBlocsVirtualized(blocs)}
       </section>
     );
   }

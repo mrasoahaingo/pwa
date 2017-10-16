@@ -25,13 +25,6 @@ module.exports = {
     ],
   },
 
-  resolve: {
-    alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat',
-    },
-  },
-
   output: {
     path: path.resolve('./build/client'),
     publicPath: __PWA_PUBLIC_PATH__,

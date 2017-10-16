@@ -105,6 +105,7 @@
     "react-dom": "16.0.0",
     "react-emotion": "^8.0.5",
     "react-helmet": "5.2.0",
+    "react-lazyload": "^2.2.7",
     "react-motion": "0.5.1",
     "react-redux": "5.0.6",
     "react-router": "4.2.0",

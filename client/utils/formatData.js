@@ -10,7 +10,7 @@ export const getFormattedBlocs = (data) =>
     }
     bloc.feed.forEach(article => {
       const newArticle = {
-        id: article.remoteId,
+        remoteId: article.remoteId,
         title: article.default.title,
         snippet: article.default.snippet,
         image: article.default.image,

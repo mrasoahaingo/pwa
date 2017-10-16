@@ -51,27 +51,26 @@ app.use(csp({
 app.use(compression());
 app.use(morgan(__LOCAL__ ? 'dev' : 'combined'));
 app.use('/api/page', async (req, res) => {
-  const { pageId } = req.query;
-  const data = await fetch(`https://api.fidji.lefigaro.fr/export/page/?euid=${pageId}&source=lefigaro.fr&type_ranking%5B0%5D=News&oneprofile=1`);
+  const { remoteId } = req.query;
+  const data = await fetch(`https://api.fidji.lefigaro.fr/export/page/?euid=${remoteId}&source=lefigaro.fr&type_ranking%5B0%5D=News&oneprofile=1`);
   const result = await data.json();
-  res.json({ remoteId: pageId, blocs: getFormattedBlocs(result) });
+  res.json({ remoteId, blocs: getFormattedBlocs(result) });
 });
 app.use('/api/article', async (req, res) => {
-  const { articleId } = req.query;
-  const data = await fetch(`https://api.fidji.lefigaro.fr/export/articles/?source=lefigaro.fr&euid=${articleId}&limit=1&full=1&oneprofile=1&mediaref=1`);
+  const { remoteId } = req.query;
+  const data = await fetch(`https://api.fidji.lefigaro.fr/export/articles/?source=lefigaro.fr&euid=${remoteId}&limit=1&full=1&oneprofile=1&mediaref=1`);
   const result = await data.json();
   res.json(getFormattedArticle(result));
 });
 app.use('/api/comments', async (req, res) => {
-  const { articleId } = req.query;
-  const data = await fetch(`http://plus.lefigaro.fr/fpservice/commentaires/sdv/${articleId}/json?page=0&parents_limit=20`);
+  const { remoteId } = req.query;
+  const data = await fetch(`http://plus.lefigaro.fr/fpservice/commentaires/sdv/${remoteId}/json?page=0&parents_limit=20`);
   const result = await data.json();
   res.json(result);
 });
 app.use('/build/client', express.static('build/client'));
 app.use('/serviceWorker.js', express.static('build/client/serviceWorker.js'));
 app.use('/manifest.json', express.static('build/client/manifest.json'));
-app.use(slashes(true));
 app.use(renderMiddleware);
 
 const PORT = process.env.PORT || 8000;
