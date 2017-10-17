@@ -59,7 +59,7 @@ const HomePageBlocsVirtualized = (blocs) => (
             rowIndex={index}
           >
           {({ measure }) => (
-            <div style={style}>
+            <div style={style} role="row">
               <HomePageBloc {...blocs[index]} measure={measure} />
             </div>
           )}
@@ -71,7 +71,7 @@ const HomePageBlocsVirtualized = (blocs) => (
 );
 
 const HomePageBloc = ({ title, articles, skin, measure }) => (
-  <section className={`bloc bloc--${skin}`}>
+  <section className={`bloc bloc--${skin}`} role="gridcell">
     {title && <h3 className="bloc__title">{title}</h3>}
     {articles.length > 0 && (
       <section className="bloc__articles">

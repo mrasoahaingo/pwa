@@ -19,7 +19,7 @@ const Header = () => (
         path="*"
         exact
         component={() => (
-          <Link to="/"><img className="header__left" src="https://icongr.am/clarity/close.svg?color=FFFFFF" alt="" /></Link>
+          <Link to="/" name="Home"><img className="header__left" src="https://icongr.am/clarity/close.svg?color=FFFFFF" alt="" /></Link>
         )}
       />
     </Switch>
