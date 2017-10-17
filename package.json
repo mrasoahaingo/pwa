@@ -40,7 +40,6 @@
     "lint:stylelint": "stylelint ./client/**/*.css",
     "test": "NODE_ENV=test jest"
   },
-  "pre-commit": "lint, test",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "6.26.0",
@@ -126,9 +125,6 @@
     "webpack-hot-middleware": "2.19.1",
     "webpack-node-externals": "1.6.0",
     "worker-loader": "1.0.0"
-  },
-  "optionalDependencies": {
-    "pre-commit": "1.2.2"
   },
   "jest": {
     "globals": {
