@@ -40,8 +40,34 @@ const cache = new CellMeasurerCache({
   defaultHeight: 64,
 });
 
+class HomePageBlocContainer extends React.PureComponent {
+  static propTypes = {
+    measure: PropTypes.func.isRequired,
+    style: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
+  }
+  componentDidMount() {
+    if (!this.isMeasured) {
+      this.isMeasured = true;
+      this.props.measure();
+    }
+  }
+  isMeasured = false;
+  render() {
+    const { style, children } = this.props;
+    return (
+      <div style={style} role="row">
+        {children}
+      </div>
+    );
+  }
+}
+
 const HomePageBlocsVirtualized = (blocs) => (
-  <AutoSizer>
+  <AutoSizer
+    defaultHeight={600}
+    defaultWidth={400}
+  >
     {({ height, width }) => (
       <List
         height={height}
@@ -59,9 +85,9 @@ const HomePageBlocsVirtualized = (blocs) => (
             rowIndex={index}
           >
           {({ measure }) => (
-            <div style={style} role="row">
+            <HomePageBlocContainer style={style} measure={measure}>
               <HomePageBloc {...blocs[index]} measure={measure} />
-            </div>
+            </HomePageBlocContainer>
           )}
           </CellMeasurer>
         )}
