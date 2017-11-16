@@ -148,7 +148,7 @@ class HomePage extends React.Component {
     return (
       <section className="home-page">
         <Helmet title={`Home Page ${name}`} />
-        {isLoading ? HomePageBlocsPlaceholder() : HomePageBlocsVirtualized(blocs)}
+        {isLoading ? HomePageBlocsPlaceholder() : HomePageBlocsVirtualized(blocs.slice(0, 1))}
       </section>
     );
   }
